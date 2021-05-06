@@ -34,6 +34,8 @@ dependencies {
     implementation("com.typesafe.akka:akka-slf4j_${scalaCompatVersion}:${akkaVersion}")
     implementation("com.typesafe.akka:akka-stream_${scalaCompatVersion}:${akkaVersion}")
     implementation "com.typesafe.akka:akka-http_${scalaCompatVersion}:${akkaHttpVersion}"
+    implementation("org.slf4j:slf4j-simple:1.7.21") // needed to not get SLF4J: Failed to load class “org.slf4j.impl.StaticLoggerBinder” msg
+
 
 }
 
