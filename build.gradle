@@ -1,0 +1,56 @@
+plugins {
+    id 'scala'
+    id 'application'
+
+    // Creating fat/über JARs (https://github.com/johnrengelman/shadow)
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    scalaCompatVersion = '2.13'
+    scalaVersion = '2.13.5'
+    json4sGroup = 'org.json4s'
+    json4sVersion = '3.7.0-M5'
+    akkaVersion = '2.6.10'
+    akkaHttpVersion = '10.2.1'
+    akkaHttpJsonVersion = '1.35.0'
+
+}
+
+dependencies {
+    implementation("org.scala-lang:scala-library:${scalaVersion}")
+
+    // For Json håndtering
+    implementation("${json4sGroup}:json4s-native_${scalaCompatVersion}:${json4sVersion}")
+    implementation("${json4sGroup}:json4s-jackson_${scalaCompatVersion}:${json4sVersion}")
+
+    // Akka http for sending HTTP request
+    implementation("com.typesafe.akka:akka-slf4j_${scalaCompatVersion}:${akkaVersion}")
+    implementation("com.typesafe.akka:akka-stream_${scalaCompatVersion}:${akkaVersion}")
+    implementation "com.typesafe.akka:akka-http_${scalaCompatVersion}:${akkaHttpVersion}"
+
+}
+
+mainClassName = "App"
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
+
+shadowJar {
+
+    transform(AppendingTransformer) {
+        resource = 'reference.conf'
+    }
+    //Fjerne -all jars
+    archiveClassifier.set('')
+
+}
+
+uploadArchives {
+    dependsOn shadowJar
+}
